@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notario24h - Registro de Llamadas</title>
+    <meta name="theme-color" content="#1f2937">
+    <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiTm90YXJpbzI0aCIsInNob3J0X25hbWUiOiJOb3RhcmlvMjRoIiwic3RhcnRfdXJsIjoiLyIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiNmZmZmZmYiLCJ0aGVtZV9jb2xvciI6IiMxZjI5MzciLCJpY29ucyI6W3sic3JjIjoiZGF0YTppbWFnZS9wbmc7YmFzZTY0LGlWQk9SdzBLR2dvQUFBQU5TVWhFVWdBQUFEQUFBQUF3Q0FZQUFBQ1hBdTFCQUFBQUJITkNTVlFJQ0FnSWZBaGtpQUFBQUJKUlU1RXJrSmdnZz09Iiwic2l6ZXMiOiI0OHg0OCIsInR5cGUiOiJpbWFnZS9wbmcifV19">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 414px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: #f59e0b;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        .whatsapp-info {
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .tabs {
+            display: flex;
+            background: #f3f4f6;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px 10px;
+            text-align: center;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b7280;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            background: white;
+            color: #1f2937;
+            border-bottom: 3px solid #f59e0b;
+        }
+
+        .content {
+            padding: 20px;
+            min-height: calc(100vh - 200px);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #f59e0b;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .record {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease;
+        }
+
+        .record:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .record-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .record-date {
+            font-size: 12px;
+            color: #6b7280;
+            background: #f3f4f6;
+            padding: 4px 8px;
+            border-radius: 20px;
+        }
+
+        .record-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .btn-edit {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #ef4444;
+            color: white;
+        }
+
+        .record-info {
+            margin-bottom: 8px;
+        }
+
+        .record-info strong {
+            color: #1f2937;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .status-ordered {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-finished {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6b7280;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            float: right;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6b7280;
+        }
+
+        .filter-section {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .filter-row select {
+            flex: 1;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                max-width: 100%;
+            }
+            
+            .content {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">N24</div>
+            <h1>Notario24h</h1>
+            <div class="whatsapp-info">
+                📱 WhatsApp: 849-358-3335
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('registro')">Registro</button>
+            <button class="tab" onclick="showTab('pendientes')">Pendientes</button>
+            <button class="tab" onclick="showTab('ordenados')">Ordenados</button>
+            <button class="tab" onclick="showTab('finalizados')">Finalizados</button>
+        </div>
+
+        <!-- Tab de Registro -->
+        <div id="registro" class="content">
+            <form id="registroForm">
+                <div class="form-group">
+                    <label for="fecha">Fecha</label>
+                    <input type="date" id="fecha" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="contacto">Contacto</label>
+                    <input type="text" id="contacto" placeholder="Nombre del contacto" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="movil">Móvil</label>
+                    <input type="tel" id="movil" placeholder="849-000-0000" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="concepto">Concepto</label>
+                    <textarea id="concepto" rows="3" placeholder="Descripción del concepto..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="cliente">Cliente</label>
+                    <input type="text" id="cliente" placeholder="Nombre del cliente" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="movilCliente">Móvil Cliente</label>
+                    <input type="tel" id="movilCliente" placeholder="849-000-0000" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="servicioOrdenado">Servicio Ordenado</label>
+                    <select id="servicioOrdenado" required>
+                        <option value="">Seleccionar...</option>
+                        <option value="si">Sí</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="servicioFinalizado">Servicio Finalizado</label>
+                    <select id="servicioFinalizado" required>
+                        <option value="">Seleccionar...</option>
+                        <option value="si">Sí</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn">Registrar Llamada</button>
+            </form>
+        </div>
+
+        <!-- Tab de Pendientes -->
+        <div id="pendientes" class="content" style="display: none;">
+            <div class="filter-section">
+                <h3 style="margin-bottom: 10px;">Filtros</h3>
+                <div class="filter-row">
+                    <select id="filterPendientes">
+                        <option value="all">Todos los registros</option>
+                        <option value="recent">Últimos 7 días</option>
+                        <option value="month">Último mes</option>
+                    </select>
+                </div>
+            </div>
+            <div id="listaPendientes"></div>
+        </div>
+
+        <!-- Tab de Ordenados -->
+        <div id="ordenados" class="content" style="display: none;">
+            <div class="filter-section">
+                <h3 style="margin-bottom: 10px;">Filtros</h3>
+                <div class="filter-row">
+                    <select id="filterOrdenados">
+                        <option value="all">Todos los registros</option>
+                        <option value="recent">Últimos 7 días</option>
+                        <option value="month">Último mes</option>
+                    </select>
+                </div>
+            </div>
+            <div id="listaOrdenados"></div>
+        </div>
+
+        <!-- Tab de Finalizados -->
+        <div id="finalizados" class="content" style="display: none;">
+            <div class="filter-section">
+                <h3 style="margin-bottom: 10px;">Filtros</h3>
+                <div class="filter-row">
+                    <select id="filterFinalizados">
+                        <option value="all">Todos los registros</option>
+                        <option value="recent">Últimos 7 días</option>
+                        <option value="month">Último mes</option>
+                    </select>
+                </div>
+            </div>
+            <div id="listaFinalizados"></div>
+        </div>
+    </div>
+
+    <!-- Modal para editar -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Editar Registro</h2>
+            <form id="editForm">
+                <input type="hidden" id="editId">
+                
+                <div class="form-group">
+                    <label for="editFecha">Fecha</label>
+                    <input type="date" id="editFecha" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editContacto">Contacto</label>
+                    <input type="text" id="editContacto" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editMovil">Móvil</label>
+                    <input type="tel" id="editMovil" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editConcepto">Concepto</label>
+                    <textarea id="editConcepto" rows="3" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="editCliente">Cliente</label>
+                    <input type="text" id="editCliente" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editMovilCliente">Móvil Cliente</label>
+                    <input type="tel" id="editMovilCliente" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editServicioOrdenado">Servicio Ordenado</label>
+                    <select id="editServicioOrdenado" required>
+                        <option value="si">Sí</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="editServicioFinalizado">Servicio Finalizado</label>
+                    <select id="editServicioFinalizado" required>
+                        <option value="si">Sí</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn">Actualizar</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let registros = [];
+        let editingId = null;
+
+        // Función para guardar datos (simulando persistencia)
+        function saveData() {
+            // En un entorno real, aquí se guardarían en localStorage
+            // localStorage.setItem('notario_registros', JSON.stringify(registros));
+            console.log('Datos guardados:', registros.length, 'registros');
+        }
+
+        // Función para cargar datos de ejemplo (simulando datos guardados)
+        function loadSampleData() {
+            if (registros.length === 0) {
+                registros = [
+                    {
+                        id: 1,
+                        fecha: '2025-06-08',
+                        contacto: 'María González',
+                        movil: '849-123-4567',
+                        concepto: 'Legalización de documentos',
+                        cliente: 'Juan Pérez',
+                        movilCliente: '849-987-6543',
+                        servicioOrdenado: 'si',
+                        servicioFinalizado: 'no',
+                        timestamp: new Date().toISOString()
+                    },
+                    {
+                        id: 2,
+                        fecha: '2025-06-07',
+                        contacto: 'Carlos Martínez',
+                        movil: '849-555-0123',
+                        concepto: 'Autenticación de firmas',
+                        cliente: 'Ana López',
+                        movilCliente: '849-444-0987',
+                        servicioOrdenado: 'no',
+                        servicioFinalizado: 'no',
+                        timestamp: new Date().toISOString()
+                    },
+                    {
+                        id: 3,
+                        fecha: '2025-06-06',
+                        contacto: 'Luisa Rodríguez',
+                        movil: '849-777-8888',
+                        concepto: 'Certificación de copias',
+                        cliente: 'Pedro Sánchez',
+                        movilCliente: '849-333-2222',
+                        servicioOrdenado: 'si',
+                        servicioFinalizado: 'si',
+                        timestamp: new Date().toISOString()
+                    }
+                ];
+            }
+        }
+
+        // Inicializar la aplicación cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        function initializeApp() {
+            // Configurar fecha actual por defecto
+            document.getElementById('fecha').valueAsDate = new Date();
+            
+            // Cargar datos de ejemplo
+            loadSampleData();
+            
+            // Actualizar todas las listas
+            updateAllLists();
+            
+            // Configurar event listeners
+            setupEventListeners();
+        }
+
+        function setupEventListeners() {
+            // Configurar filtros
+            ['Pendientes', 'Ordenados', 'Finalizados'].forEach(type => {
+                const filterElement = document.getElementById(`filter${type}`);
+                if (filterElement) {
+                    filterElement.addEventListener('change', function() {
+                        updateAllLists();
+                    });
+                }
+            });
+        }
+
+        // Manejar envío de formulario
+        document.getElementById('registroForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const registro = {
+                id: Date.now(),
+                fecha: document.getElementById('fecha').value,
+                contacto: document.getElementById('contacto').value,
+                movil: document.getElementById('movil').value,
+                concepto: document.getElementById('concepto').value,
+                cliente: document.getElementById('cliente').value,
+                movilCliente: document.getElementById('movilCliente').value,
+                servicioOrdenado: document.getElementById('servicioOrdenado').value,
+                servicioFinalizado: document.getElementById('servicioFinalizado').value,
+                timestamp: new Date().toISOString()
+            };
+
+            registros.push(registro);
+            saveData();
+            
+            this.reset();
+            document.getElementById('fecha').valueAsDate = new Date();
+            
+            alert('Registro guardado exitosamente');
+            updateAllLists();
+        });
+
+        // Manejar edición
+        document.getElementById('editForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const id = parseInt(document.getElementById('editId').value);
+            const index = registros.findIndex(r => r.id === id);
+            
+            if (index !== -1) {
+                registros[index] = {
+                    ...registros[index],
+                    fecha: document.getElementById('editFecha').value,
+                    contacto: document.getElementById('editContacto').value,
+                    movil: document.getElementById('editMovil').value,
+                    concepto: document.getElementById('editConcepto').value,
+                    cliente: document.getElementById('editCliente').value,
+                    movilCliente: document.getElementById('editMovilCliente').value,
+                    servicioOrdenado: document.getElementById('editServicioOrdenado').value,
+                    servicioFinalizado: document.getElementById('editServicioFinalizado').value
+                };
+                
+                saveData();
+                closeModal();
+                updateAllLists();
+                alert('Registro actualizado exitosamente');
+            }
+        });
+
+        function showTab(tabName) {
+            // Ocultar todos los contenidos
+            document.querySelectorAll('.content').forEach(content => {
+                content.style.display = 'none';
+            });
+            
+            // Remover clase active de todos los tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Mostrar el contenido seleccionado
+            document.getElementById(tabName).style.display = 'block';
+            
+            // Activar el tab correspondiente
+            event.target.classList.add('active');
+            
+            // Actualizar listas según el tab
+            updateAllLists();
+        }
+
+        function updateAllLists() {
+            // Verificar que registros existe y es un array
+            if (!registros || !Array.isArray(registros)) {
+                registros = [];
+            }
+            
+            updateList('pendientes', registros.filter(r => r.servicioOrdenado === 'no' && r.servicioFinalizado === 'no'));
+            updateList('ordenados', registros.filter(r => r.servicioOrdenado === 'si' && r.servicioFinalizado === 'no'));
+            updateList('finalizados', registros.filter(r => r.servicioFinalizado === 'si'));
+        }
+
+        function updateList(listType, data) {
+            const container = document.getElementById(`lista${listType.charAt(0).toUpperCase() + listType.slice(1)}`);
+            
+            // Verificar que el contenedor existe
+            if (!container) {
+                console.error('Container not found for:', listType);
+                return;
+            }
+            
+            // Verificar que data es un array
+            if (!data || !Array.isArray(data)) {
+                data = [];
+            }
+            
+            if (data.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📋</div>
+                        <h3>No hay registros</h3>
+                        <p>No se encontraron llamadas en esta categoría</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Ordenar por fecha más reciente
+            data.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+            
+            container.innerHTML = data.map(registro => `
+                <div class="record">
+                    <div class="record-header">
+                        <div class="record-date">${formatDate(registro.fecha)}</div>
+                        <div class="record-actions">
+                            <button class="btn-small btn-edit" onclick="editRecord(${registro.id})">Editar</button>
+                            <button class="btn-small btn-delete" onclick="deleteRecord(${registro.id})">Borrar</button>
+                        </div>
+                    </div>
+                    <div class="record-info">
+                        <strong>Contacto:</strong> ${registro.contacto}
+                        <span class="status-badge ${getStatusClass(registro)}">
+                            ${getStatusText(registro)}
+                        </span>
+                    </div>
+                    <div class="record-info"><strong>Móvil:</strong> ${registro.movil}</div>
+                    <div class="record-info"><strong>Cliente:</strong> ${registro.cliente}</div>
+                    <div class="record-info"><strong>Móvil Cliente:</strong> ${registro.movilCliente}</div>
+                    <div class="record-info"><strong>Concepto:</strong> ${registro.concepto}</div>
+                </div>
+            `).join('');
+        }
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('es-DO', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+        }
+
+        function getStatusClass(registro) {
+            if (registro.servicioFinalizado === 'si') return 'status-finished';
+            if (registro.servicioOrdenado === 'si') return 'status-ordered';
+            return 'status-pending';
+        }
+
+        function getStatusText(registro) {
+            if (registro.servicioFinalizado === 'si') return 'Finalizado';
+            if (registro.servicioOrdenado === 'si') return 'Ordenado';
+            return 'Pendiente';
+        }
+
+        function editRecord(id) {
+            const registro = registros.find(r => r.id === id);
+            if (!registro) return;
+
+            document.getElementById('editId').value = id;
+            document.getElementById('editFecha').value = registro.fecha;
+            document.getElementById('editContacto').value = registro.contacto;
+            document.getElementById('editMovil').value = registro.movil;
+            document.getElementById('editConcepto').value = registro.concepto;
+            document.getElementById('editCliente').value = registro.cliente;
+            document.getElementById('editMovilCliente').value = registro.movilCliente;
+            document.getElementById('editServicioOrdenado').value = registro.servicioOrdenado;
+            document.getElementById('editServicioFinalizado').value = registro.servicioFinalizado;
+
+            document.getElementById('editModal').style.display = 'block';
+        }
+
+        function deleteRecord(id) {
+            if (confirm('¿Estás seguro de que quieres eliminar este registro?')) {
+                registros = registros.filter(r => r.id !== id);
+                saveData();
+                updateAllLists();
+                alert('Registro eliminado exitosamente');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        // Cerrar modal al hacer clic fuera
+        window.onclick = function(event) {
+            const modal = document.getElementById('editModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Nota informativa para el usuario
+        console.log('📱 Aplicación Notario24h iniciada');
+        console.log('💡 En una instalación real, los datos se guardarían permanentemente');
+
+        // Registrar Service Worker para PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCJpbnN0YWxsIiwgZXZlbnQgPT4ge30pOw==');
+        }
+
+        // Si el DOM ya está cargado, inicializar inmediatamente
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeApp);
+        } else {
+            initializeApp();
+        }
+    </script>
+</body>
+</html>
